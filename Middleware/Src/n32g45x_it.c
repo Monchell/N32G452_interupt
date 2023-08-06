@@ -35,6 +35,8 @@
 #include "n32g45x_it.h"
 #include "n32g45x.h"
 #include "main.h"
+#include "Freertos.h"
+#include "task.h"
 
 /** @addtogroup N32G45X_StdPeriph_Template
  * @{
@@ -99,9 +101,9 @@ void UsageFault_Handler(void)
 /**
  * @brief  This function handles SVCall exception.
  */
-void SVC_Handler(void)
+/*void SVC_Handler(void)
 {
-}
+}*/
 
 /**
  * @brief  This function handles Debug Monitor exception.
@@ -113,10 +115,14 @@ void DebugMon_Handler(void)
 /**
  * @brief  This function handles SysTick Handler.
  */
+extern void xPortSysTickHandler(void);
 void SysTick_Handler(void)
 {
+	if(xTaskGetSchedulerState()!=taskSCHEDULER_NOT_STARTED)// 系统已经运行
+	{
+		xPortSysTickHandler();
+	}
 }
-
 /**
  * @brief  This function handles DMA interrupt request defined in main.h .
  */
