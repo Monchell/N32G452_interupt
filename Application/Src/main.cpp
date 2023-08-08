@@ -35,7 +35,7 @@ void assert_failed(const uint8_t* expr, const uint8_t* file, uint32_t line)
 
 /** 任务堆栈大小 */
 #define START_TASK_SIZE 		64  
-#define TASK1_SIZE 		32
+#define TASK1_SIZE 		64
 #define TASK2_SIZE 		64
 
 /** 任务句柄 */
@@ -63,11 +63,11 @@ int main(void)
 	//while(1);
 	//创建开始任务
 	xTaskCreate((TaskFunction_t )start_task,            //任务函数
-							(const char*    )"start_task",          //任务名称
-              (uint16_t       )START_TASK_SIZE,        //任务堆栈大小
+							(const char*    )"start_task",          //任务名称，有时候需要打印错误的时候可以知道是哪个任务出错
+              (uint16_t       )START_TASK_SIZE,       //任务堆栈大小
               (void*          )NULL,                  //传递给任务函数的参数
               (UBaseType_t    )START_TASK_PRIO,       //任务优先级
-              (TaskHandle_t*  )&Start_Task_Handler);   //任务句柄
+              (TaskHandle_t*  )&Start_Task_Handler);  //任务句柄
 	vTaskStartScheduler();          //开启任务调度
 }
 
@@ -94,11 +94,22 @@ void start_task(void *pvParameters)
     vTaskDelete(Start_Task_Handler); //删除开始任务
     taskEXIT_CRITICAL();            //退出临界区
 }
-
 int task1_tick = 0;
+int i = 0;
+/**
+ * @brief 任务1,创建数组并且赋值
+ * @param pvParameters：任务参数
+ * @note  自由修改，这个任务目前是创建数组赋值，调节数组大小可以验证溢出是否发生，是如何检测的。
+ */
 void task1(void *pvParameters)
 {	
-	//uint32_t* p = (uint32_t*)malloc(64*sizeof(uint32_t));
+	uint32_t nums2[20];
+	uint32_t nums1[20];
+	for(i = 20; i >= 0; i--)
+	{
+		nums2[i] = i;
+		vTaskDelay(20);
+	}
 	while(1)
 	{
 		task1_tick++;
@@ -106,14 +117,33 @@ void task1(void *pvParameters)
 	}
 	
 }
-
 int task2_tick = 0;
+/**
+ * @brief 任务2
+ * @param pvParameters：任务参数
+ * @note  自由修改，这个任务目前是一个自增的计数
+ */
 void task2(void *pvParameters)
 {
 	while(1)
 	{
-		task2_tick += 2;
+		task2_tick += 1;
 		vTaskDelay(1000);
+	}
+}
+
+bool flowed = false;
+/**
+ * @brief 堆栈溢出错误处理钩子函数
+ * @param xTask：任务句柄，pcTaskName：任务名称
+ * @note  某个任务堆栈溢出的时候会触发
+ */
+void vApplicationStackOverflowHook( TaskHandle_t xTask,char * pcTaskName )
+{
+	flowed = true;
+	while(1)
+	{
+		flowed = true;
 	}
 }
 
