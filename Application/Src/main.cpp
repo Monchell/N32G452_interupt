@@ -31,11 +31,11 @@ void assert_failed(const uint8_t* expr, const uint8_t* file, uint32_t line)
 /** 任务优先级 */
 #define START_TASK_PRIO		1
 #define TASK1_PRIO		2
-#define TASK2_PRIO		3
+#define TASK2_PRIO		2
 
 /** 任务堆栈大小 */
 #define START_TASK_SIZE 		64  
-#define TASK1_SIZE 		64
+#define TASK1_SIZE 		128
 #define TASK2_SIZE 		64
 
 /** 任务句柄 */
@@ -96,6 +96,7 @@ void start_task(void *pvParameters)
 }
 int task1_tick = 0;
 int i = 0;
+void test(uint32_t tick);
 /**
  * @brief 任务1,创建数组并且赋值
  * @param pvParameters：任务参数
@@ -103,18 +104,28 @@ int i = 0;
  */
 void task1(void *pvParameters)
 {	
-	uint32_t nums2[20];
-	uint32_t nums1[20];
-	for(i = 20; i >= 0; i--)
-	{
-		nums2[i] = i;
-		vTaskDelay(20);
-	}
+	test(5);
+	test(10);
+	
 	while(1)
 	{
 		task1_tick++;
 		vTaskDelay(1000);
 	}
+	
+}
+/**
+ * @brief 递归调用内存函数
+ * @note  测试用的
+ */
+void test(uint32_t tick)
+{
+	vTaskDelay(2000);
+	if(tick == 0)
+		return;
+	tick --;	
+	test(tick);
+	return;
 	
 }
 int task2_tick = 0;
@@ -123,11 +134,12 @@ int task2_tick = 0;
  * @param pvParameters：任务参数
  * @note  自由修改，这个任务目前是一个自增的计数
  */
+UBaseType_t uxHighWaterMark = 0;
 void task2(void *pvParameters)
 {
 	while(1)
 	{
-		task2_tick += 1;
+		uxHighWaterMark = uxTaskGetStackHighWaterMark(Task1_Handler);
 		vTaskDelay(1000);
 	}
 }
