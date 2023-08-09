@@ -56,9 +56,9 @@ uint16_t myus = 0;
  */
 int main(void)
 {
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-	RCC_GetClocksFreqValue(&rcc_clock);
-	mc_timer2_init();
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//中断分组设置
+	RCC_GetClocksFreqValue(&rcc_clock);//获取时钟树的时钟频率（拿来看看）
+	mc_timer2_init();//TIM2初始化
 	NZ_Delay_init();
 	//while(1);
 	//创建开始任务

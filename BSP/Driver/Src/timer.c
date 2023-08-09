@@ -6,6 +6,11 @@
  */
  
  
+/**
+* @brief Tim2配置成计数器
+* @note  Tim2配置成了1ms进一次中断，向上计数，1000装载值，1000hz。
+*/
+
 void mc_timer2_init(void)
 {
   /* TIM2 clock enable */
@@ -39,8 +44,11 @@ void mc_timer2_init(void)
 	TIM_Enable(TIM2,ENABLE);//开始工作
 	
 }
+
+
+
 /**
- * @brief 初始化延迟函数
+ * @brief 初始化SYSTICK,并且配置延时函数
  * @note  SYSTICK的时钟固定为HCLK时钟
  */
 static u32  fac_us = 0;	 //us延时倍乘数			   
