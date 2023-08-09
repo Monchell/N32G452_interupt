@@ -10,6 +10,7 @@
 <!-- /code_chunk_output -->
 ### 简介
 这是一个N32G452的工程模板，内容包含了N32G452的keil-mdk基本配置，同时加入了freertos的炒作系统
+如何将这个模板工程，转换成自己的工程，可以查看[如何修改工程名](https://blog.csdn.net/u010134355/article/details/123470539)
 ### 历史版本
 ```bash
 +---Application//用于存放应用层代码
