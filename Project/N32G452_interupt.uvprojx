@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>N32G452_template</TargetName>
+      <TargetName>N32G452_interupt</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pArmCC>6160000::V6.16::ARMCLANG</pArmCC>
@@ -50,7 +50,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>N32G452_template</OutputName>
+          <OutputName>N32G452_interupt</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -571,9 +571,9 @@
               <FilePath>..\Application\Src\main.cpp</FilePath>
             </File>
             <File>
-              <FileName>stack_check.cpp</FileName>
+              <FileName>taskfor_test.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\Application\Src\stack_check.cpp</FilePath>
+              <FilePath>..\Application\Src\taskfor_test.cpp</FilePath>
             </File>
           </Files>
         </Group>

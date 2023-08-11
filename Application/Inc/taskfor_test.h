@@ -13,8 +13,7 @@ extern "C" {
 #endif
 
 #include "n32g45x.h"
-void stackcheck_task(void *pvParameters);
-void recursion_task(void *xTasks);
+void count_task(void *xTasks);
 #ifdef __cplusplus
 }
 #endif
@@ -30,4 +29,4 @@ void recursion_task(void *xTasks);
 
 /**
  * @}
- */
+ */ 

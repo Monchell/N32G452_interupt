@@ -130,18 +130,41 @@ void DMA_IRQ_HANDLER(void)
 {
 }
 
-int myms = 0;
-int mys = 0;
+/**
+ * @brief  This function handles TIM2 interrupt request defined in main.h .
+ */
+int myms2 = 0;
+int mys2 = 0;
 void TIM2_IRQHandler(void)
 {
 	if(TIM_GetIntStatus(TIM2, TIM_INT_UPDATE) != RESET)
 	{
 		TIM_ClrIntPendingBit(TIM2,TIM_INT_UPDATE);
-		myms++;
-		if(myms >= 1000)
+		myms2++;
+		if(myms2 >= 1000)
 		{
-			mys++;
-			myms =0;
+			mys2++;
+			myms2 =0;
+		}
+	}
+	
+}
+
+/**
+ * @brief  This function handles TIM3 interrupt request defined in main.h .
+ */
+int myms3 = 0;
+int mys3 = 0;
+void TIM3_IRQHandler(void)
+{
+	if(TIM_GetIntStatus(TIM3, TIM_INT_UPDATE) != RESET)
+	{
+		TIM_ClrIntPendingBit(TIM3,TIM_INT_UPDATE);
+		myms3++;
+		if(myms3 >= 1000)
+		{
+			mys3++;
+			myms3 =0;
 		}
 	}
 	

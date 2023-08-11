@@ -12,7 +12,7 @@
 #include "timer.h"
 #include "FreeRTOS.h"
 #include "task.h"
-#include "stack_check.h"
+#include "taskfor_test.h"
 
 
 /**
@@ -32,19 +32,16 @@ void assert_failed(const uint8_t* expr, const uint8_t* file, uint32_t line)
 
 
 /** 任务优先级 */
-#define START_TASK_PRIO					1
-#define RECURSION_TASK_PRIO			2
-#define STACKCHECK_TASK_PRIO		2
+#define START_TASK_PRIO				1
+#define COUNT_TASK_PRIO				2
 
 /** 任务堆栈大小 */
-#define START_TASK_SIZE 				64  
-#define RECURSION_TASK_SIZE 		128
-#define STACKCHECK_TASK_SIZE 		128
+#define START_TASK_SIZE 			64  
+#define COUNT_TASK_SIZE 		 	64
 
 /** 初始任务句柄 */
 TaskHandle_t Start_Task_Handler;
-TaskHandle_t Recursion_Task_Handler;
-TaskHandle_t Stackcheck_Task_Handler;
+TaskHandle_t Count_Task_Handler;
 
 
 /** 初始任务函数 */
@@ -61,6 +58,9 @@ int main(void)
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//中断分组设置
 	RCC_GetClocksFreqValue(&rcc_clock);//获取时钟树的时钟频率（拿来看看）
 	NZ_Delay_init();//时钟初始化
+	mc_timer2_init();
+	mc_timer3_init();
+	
 	xTaskCreate((TaskFunction_t )start_task,            //任务函数
 							(const char*    )"start_task",          //任务名称，有时候需要打印错误的时候可以知道是哪个任务出错
               (uint16_t       )START_TASK_SIZE,       //任务堆栈大小
@@ -76,20 +76,13 @@ void start_task(void *pvParameters)
 {
     taskENTER_CRITICAL();           //进入临界区
     //创建LED0任务
-    xTaskCreate((TaskFunction_t )recursion_task,     	
-                (const char*    )"recursion_task",   	
-                (uint16_t       )RECURSION_TASK_SIZE,
+    xTaskCreate((TaskFunction_t )count_task,     	
+                (const char*    )"count_task",   	
+                (uint16_t       )COUNT_TASK_SIZE,
                 (void*          )NULL,				
-                (UBaseType_t    )RECURSION_TASK_PRIO,	
-                (TaskHandle_t*  )&Recursion_Task_Handler);   
-								
-    xTaskCreate((TaskFunction_t )stackcheck_task,     	
-                (const char*    )"stackcheck_task",   	
-                (uint16_t       )STACKCHECK_TASK_SIZE, 
-                (void*          )&Recursion_Task_Handler,				
-                (UBaseType_t    )STACKCHECK_TASK_PRIO,	
-                (TaskHandle_t*  )&Stackcheck_Task_Handler);   
-								
+                (UBaseType_t    )COUNT_TASK_PRIO,	
+                (TaskHandle_t*  )&Count_Task_Handler);   
+																
     vTaskDelete(Start_Task_Handler); //删除开始任务
     taskEXIT_CRITICAL();            //退出临界区
 }
