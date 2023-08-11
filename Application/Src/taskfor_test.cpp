@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include "FreeRTOS.h"
 #include "task.h"
+#include "timer.h"
 
 
 /** ÈÎÎñº¯Êý */
@@ -26,8 +27,11 @@ void count_task(void *xTasks)
 {
 	while(1)
 	{
-		vTaskDelay(1000);
 		tick_task ++;
+		portDISABLE_INTERRUPTS();
+		NZ_Delay_xms(5000);
+		portENABLE_INTERRUPTS();
+		NZ_Delay_xms(5000);
 	}
 }
 

@@ -23,8 +23,8 @@ void mc_timer2_init(void)
 	NVIC_InitType NVIC_InitStructure;
 	NVIC_InitStructure.NVIC_IRQChannel                   = TIM2_IRQn;//选中timer2中断
 	//优先级配置，抢占优先级和子优先级
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 1;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 4;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 0;
 	NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;//使能
 	NVIC_Init(&NVIC_InitStructure);
 	
@@ -59,8 +59,8 @@ void mc_timer3_init(void)
 	NVIC_InitType NVIC_InitStructure;
 	NVIC_InitStructure.NVIC_IRQChannel                   = TIM3_IRQn;//选中timer2中断
 	//优先级配置，抢占优先级和子优先级
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 1;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 6;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 0;
 	NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;//使能
 	NVIC_Init(&NVIC_InitStructure);
 	
